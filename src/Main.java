@@ -12,6 +12,7 @@ public class Main {
         Statement statement = null;
 
         try {
+            // 載入jdcb Driver
             Class.forName(DRIVER);
             conn = DriverManager.getConnection(url, user, pwd);
             statement = conn.createStatement();
@@ -23,21 +24,30 @@ public class Main {
                         "輸入3為變更會員資料，" +
                         "跳出請隨意輸入其他數字。"
                 );
+
+                // 使用者輸入
                 Scanner searchAction = new Scanner(System.in);
                 String action = searchAction.next();
 
                 switch (action) {
                     case "1":
                         System.out.print("請輸入您的大名：");
+
+                        // 使用者輸入
                         Scanner selectName = new Scanner(System.in);
                         String sName = selectName.next();
+
+                        // 判斷查詢的名字有無存在資料庫
                         String selectCountTableSQL = "SELECT Count(*) FROM member WHERE name = '" + sName + "'";
                         ResultSet selectCountRes = statement.executeQuery(selectCountTableSQL);
+
                         while (selectCountRes.next()) {
+                            // 如果有的話 繼續搜尋使用者資料，若沒有的話 跑ELSE
                             if (selectCountRes.getInt(1) > 0) {
                                 String selectTableSQL = "SELECT * FROM member WHERE name = '" + sName + "'";
                                 ResultSet selectRes = statement.executeQuery(selectTableSQL);
 
+                                // 處理使用者資料，並且印出
                                 while (selectRes.next()) {
                                     String name = selectRes.getString("name");
                                     String address = selectRes.getString("address");
@@ -50,6 +60,8 @@ public class Main {
                         }
                         break;
                     case "2":
+
+                        // 使用者輸入
                         System.out.print("請輸入您的大名：");
                         Scanner insertName = new Scanner(System.in);
                         String insName = insertName.next();
@@ -59,14 +71,19 @@ public class Main {
                         System.out.print("請輸入您的年齡：");
                         Scanner insertAge = new Scanner(System.in);
                         int insAge = insertAge.nextInt();
+
+                        // 寫入資料庫語法
                         String insertTableSQL = "INSERT INTO member VALUES ('" + insName + "', '" + insAddress + "', " + insAge + ")";
                         System.out.print(insertTableSQL);
                         int insertRes = statement.executeUpdate(insertTableSQL);
                         if (insertRes == 1) {
                             System.out.print("註冊成功");
+                        } else {
+                            System.out.print("註冊失敗，請聯絡管理者");
                         }
                         break;
                     case "3":
+                        // 使用者輸入
                         System.out.print("請輸入您的之前的大名：");
                         Scanner oldName = new Scanner(System.in);
                         String oName = oldName.next();
@@ -79,10 +96,15 @@ public class Main {
                         System.out.print("請輸入您的最新的年齡：");
                         Scanner updataAge = new Scanner(System.in);
                         String upAge = updataAge.next();
+
+                        // 更新使用者資料語法
                         String updataTableSQL = "UPDATE member SET name='" + upName + "', address='" + upAddress + "', age=" + upAge + " WHERE name='" + oName + "';";
                         int updataRes = statement.executeUpdate(updataTableSQL);
+
                         if (updataRes == 1) {
                             System.out.print("變更成功");
+                        } else {
+                            System.out.print("變更失敗，請聯絡管理者");
                         }
                         break;
                     default:
