@@ -6,14 +6,16 @@ public class Main {
     {
         String DRIVER = "org.mariadb.jdbc.Driver";
         String url = "jdbc:mariadb://localhost:3306/saven";
-        String user = "root";
-        String pwd = "123456";
+        String user = "";
+        String pwd = "";
         Connection conn = null;
         Statement statement = null;
 
         try {
             Class.forName(DRIVER);
             conn = DriverManager.getConnection(url, user, pwd);
+            statement = conn.createStatement();
+
             while (true) {
                 System.out.print("請輸入您要操作的功能：" +
                         "輸入1為查詢會員資料，" +
@@ -23,7 +25,6 @@ public class Main {
                 );
                 Scanner searchAction = new Scanner(System.in);
                 String action = searchAction.next();
-                statement = conn.createStatement();
 
                 switch (action) {
                     case "1":
