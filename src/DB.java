@@ -6,8 +6,8 @@ import java.sql.Statement;
 public class DB {
     private String DRIVER = "org.mariadb.jdbc.Driver";
     private String url = "jdbc:mariadb://localhost:3306/javalearn";
-    private String user = "root";
-    private String pwd = "J@y@root";
+    private String user = "";
+    private String pwd = "";
     private Connection conn = null;
 
     public Statement statement = null;
