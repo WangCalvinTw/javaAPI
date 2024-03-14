@@ -1,18 +1,14 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class DB {
     private String DRIVER = "org.mariadb.jdbc.Driver";
     private String url = "jdbc:mariadb://localhost:3306/javalearn";
-    private String user = "";
-    private String pwd = "";
+    private String user = "root";
+    private String pwd = "123456";
     private Connection conn = null;
+    private Statement statement = null;
 
-    public Statement statement = null;
-
-    public void connectDB() {
+    public Statement connectDB() {
         try {
             Class.forName(this.DRIVER);
             this.conn = DriverManager.getConnection(this.url, this.user, this.pwd);
@@ -20,6 +16,10 @@ public class DB {
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println(e.getMessage());
         }
+        return this.statement;
     }
 
+    public void disConnectDB() throws SQLException {
+        this.statement.close();
+    }
 }
